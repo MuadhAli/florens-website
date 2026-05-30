@@ -1,0 +1,6 @@
+{
+  "name": "Florens Corporate Services",
+  "description": "An institutional-grade global expansion platform offering Employer of Record (EOR), International PEO, and Subsidiary Formation solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
