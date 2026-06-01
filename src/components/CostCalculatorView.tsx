@@ -14,11 +14,18 @@ import {
   ArrowRight, 
   X,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import LeadInquiryForm from './LeadInquiryForm';
 
-export default function CostCalculatorView() {
+import { ViewId } from '../types';
+
+interface CostCalculatorViewProps {
+  onNavigate?: (view: ViewId) => void;
+}
+
+export default function CostCalculatorView({ onNavigate = () => {} }: CostCalculatorViewProps) {
   const [selectedCountry, setSelectedCountry] = useState<string>('uk');
   const [headcount, setHeadcount] = useState<number>(3);
   const [salary, setSalary] = useState<number>(115000);
@@ -57,25 +64,48 @@ export default function CostCalculatorView() {
   return (
     <div className="animate-fade-in pt-24 px-6 md:px-16 max-w-7xl mx-auto pb-24 font-sans">
       
-      {/* Editorial Header */}
-      <header className="pt-12 pb-16 max-w-3xl">
-        <motion.div 
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 mb-3"
-        >
-          <span className="p-1 px-2.5 bg-[#005eb5]/10 text-[#005eb5] text-[10px] font-mono font-bold rounded flex items-center gap-1">
-            <Calculator className="w-3 h-3" /> ALGORITHMIC MODELING
-          </span>
-        </motion.div>
-        
-        <h1 className="font-serif text-4xl md:text-5xl lg:text-5xl text-primary font-bold mb-6 leading-tight">
-          Project Total Employment Liability.
-        </h1>
-        <p className="text-neutral-600 text-sm md:text-base leading-relaxed">
-          Utilize our dynamic statutory forecasting engine to model the real financial cost of global expansion. Instantly simulate salaries, NIC burdens, and compliance fees in seconds.
-        </p>
-      </header>
+      {/* Hero Section with Breadcrumb */}
+      <section className="relative bg-[#02050b] text-white pt-32 pb-20 px-6 md:px-16 overflow-hidden -mx-6 md:-mx-16 mb-12 mt-[-6rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#005eb5]/20 via-[#02050b] to-[#02050b]"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
+          >
+            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-[#005eb5] font-bold">Cost Modeling</span>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 mb-4"
+          >
+            <span className="p-1 px-2.5 bg-[#005eb5]/20 text-[#5c9efe] text-[10px] font-mono font-bold rounded flex items-center gap-1 border border-[#005eb5]/30">
+              <Calculator className="w-3 h-3" /> ALGORITHMIC MODELING
+            </span>
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight tracking-tight"
+          >
+            Project Total Employment Liability.
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-base md:text-xl text-neutral-300 max-w-2xl font-sans leading-relaxed"
+          >
+            Utilize our dynamic statutory forecasting engine to model the real financial cost of global expansion. Instantly simulate salaries, NIC burdens, and compliance fees in seconds.
+          </motion.p>
+        </div>
+      </section>
 
       {/* Main Grid structure */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

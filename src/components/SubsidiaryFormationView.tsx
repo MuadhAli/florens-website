@@ -18,7 +18,13 @@ import {
 } from 'lucide-react';
 import LeadInquiryForm from './LeadInquiryForm';
 
-export default function SubsidiaryFormationView() {
+import { ViewId } from '../types';
+
+interface SubsidiaryFormationViewProps {
+  onNavigate?: (view: ViewId) => void;
+}
+
+export default function SubsidiaryFormationView({ onNavigate = () => {} }: SubsidiaryFormationViewProps) {
   const [activePhase, setActivePhase] = useState<number>(1);
   const [showForm, setShowForm] = useState(false);
   const [showFactSheet, setShowFactSheet] = useState(false);
@@ -78,38 +84,49 @@ export default function SubsidiaryFormationView() {
   return (
     <div className="animate-fade-in pt-24 px-6 md:px-16 max-w-7xl mx-auto pb-24">
       
-      {/* Editorial Header & Staircase Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-12 pb-16">
-        
-        {/* Left Columns - Copywriting */}
-        <div className="lg:col-span-7">
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 mb-4"
-          >
-            <span className="p-1 px-2.5 bg-[#005eb5]/10 text-[#005eb5] text-[10px] font-mono font-bold rounded">
-              ENTITY SETUP &amp; STRATEGY
-            </span>
-          </motion.div>
+      {/* Hero Section with Breadcrumb */}
+      <section className="relative bg-[#02050b] text-white pt-32 pb-20 px-6 md:px-16 overflow-hidden -mx-6 md:-mx-16 mb-12 mt-[-6rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#005eb5]/20 via-[#02050b] to-[#02050b]"></div>
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-serif text-4xl md:text-5xl lg:text-5xl text-primary font-bold mb-6 leading-[1.12]"
-          >
-            Establish institutional presence with absolute certainty.
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="font-sans text-neutral-600 text-sm md:text-base leading-relaxed mb-10 max-w-xl"
-          >
-            Navigate complex regulatory environments with our mathematically precise formation framework. We manage the statutory ledger from initial documentation to post-incorporation compliance.
-          </motion.p>
+          <div className="lg:col-span-7">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
+            >
+              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+              <ChevronRight className="w-3 h-3" />
+              <span className="text-[#005eb5] font-bold">Subsidiary Formation</span>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 mb-4"
+            >
+              <span className="p-1 px-2.5 bg-[#005eb5]/20 text-[#5c9efe] text-[10px] font-mono font-bold rounded border border-[#005eb5]/30">
+                ENTITY SETUP &amp; STRATEGY
+              </span>
+            </motion.div>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="font-serif text-4xl md:text-5xl lg:text-5xl text-white font-bold mb-6 leading-[1.12] tracking-tight"
+            >
+              Establish institutional presence with absolute certainty.
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="font-sans text-neutral-300 text-sm md:text-base leading-relaxed mb-10 max-w-xl"
+            >
+              Navigate complex regulatory environments with our mathematically precise formation framework. We manage the statutory ledger from initial documentation to post-incorporation compliance.
+            </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
@@ -125,7 +142,7 @@ export default function SubsidiaryFormationView() {
             </button>
             <button
               onClick={() => setShowFactSheet(!showFactSheet)}
-              className="border border-neutral-300 hover:border-neutral-500 text-primary h-12 px-8 flex items-center justify-center font-mono text-xs uppercase font-bold tracking-widest hover:bg-neutral-50 transition-all duration-300 cursor-pointer text-center"
+              className="border border-neutral-300 hover:border-neutral-500 text-white hover:text-primary h-12 px-8 flex items-center justify-center font-mono text-xs uppercase font-bold tracking-widest hover:bg-neutral-50 transition-all duration-300 cursor-pointer text-center"
             >
               {showFactSheet ? 'Hide Fact Sheet' : 'View Fact Sheet'}
             </button>
@@ -158,7 +175,7 @@ export default function SubsidiaryFormationView() {
             </motion.div>
           </div>
         </div>
-
+        </div>
       </section>
 
       {/* Fact Sheet Overlay Drawer */}

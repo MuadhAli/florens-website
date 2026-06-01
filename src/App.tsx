@@ -5,6 +5,9 @@ import GlobalSolutionsView from './components/GlobalSolutionsView';
 import SubsidiaryFormationView from './components/SubsidiaryFormationView';
 import CostCalculatorView from './components/CostCalculatorView';
 import ServiceDetailView from './components/ServiceDetailView';
+import AboutUsView from './components/AboutUsView';
+import WhyFlorensView from './components/WhyFlorensView';
+import ContactUsView from './components/ContactUsView';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Globe, 
@@ -19,7 +22,10 @@ import {
   Terminal, 
   Layers,
   Award,
-  BookOpen
+  BookOpen,
+  Info,
+  HelpCircle,
+  PhoneCall
 } from 'lucide-react';
 
 export default function App() {
@@ -65,6 +71,9 @@ export default function App() {
         if (activeSolutionId === 'peo') return 'PEO Framework';
         if (activeSolutionId === 'contractor') return 'Contractors';
         return 'Details';
+      case 'about-us': return 'About Us';
+      case 'why-florens': return 'Why Florens';
+      case 'contact-us': return 'Contact Us';
       default: return 'Florens';
     }
   };
@@ -81,10 +90,10 @@ export default function App() {
           className="flex items-center gap-3 cursor-pointer group"
           id="brand-logo-container"
         >
-          <img src="/logo.jpg" alt="Florens Logo" className="h-10 w-auto rounded-md object-contain transition-transform duration-300 group-hover:scale-105" />
+          <img src="/Florens Primary Logo - navbar.png" alt="Florens Logo" className="h-16 w-auto rounded-md object-contain transition-transform duration-300 group-hover:scale-105" />
           <div className="flex flex-col ml-1 hidden sm:flex">
             <span className="font-sans text-lg font-bold text-primary tracking-tight">Florens</span>
-            <span className="font-sans text-[10px] text-[#005eb5] font-semibold uppercase tracking-wider">Corporate Services</span>
+            <span className="font-sans text-[10px] text-[#005eb5] font-semibold uppercase tracking-wider">Consulting Services Private Limited</span>
           </div>
         </div>
 
@@ -98,6 +107,13 @@ export default function App() {
             Home
           </button>
 
+          <button 
+            onClick={() => handleNavigate('global-solutions')}
+            className={`hover:text-primary transition-colors h-20 flex items-center border-b-2 cursor-pointer ${currentView === 'global-solutions' ? 'border-[#005eb5] text-primary' : 'border-transparent'}`}
+          >
+            Global Architectures
+          </button>
+
           {/* Solution Dropdown Wrapper */}
           <div 
             className="relative h-20 flex items-center" 
@@ -107,7 +123,7 @@ export default function App() {
           >
             <button 
               className={`hover:text-primary transition-all h-20 flex items-center gap-1.5 cursor-pointer ${
-                (currentView === 'global-solutions' || currentView === 'service-detail' || currentView === 'subsidiary-formation') 
+                (currentView === 'service-detail' || currentView === 'subsidiary-formation') 
                   ? 'text-primary border-b-2 border-[#005eb5]' 
                   : 'border-b-2 border-transparent'
               }`}
@@ -215,29 +231,56 @@ export default function App() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.98 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-20 left-0 w-[220px] bg-white border border-neutral-200/50 shadow-2xl p-2 flex flex-col gap-1 rounded-2xl z-50 overflow-hidden"
+                  className="absolute top-20 left-0 w-[600px] bg-white border border-neutral-200/50 shadow-2xl p-4 rounded-3xl z-50 overflow-hidden"
                 >
-                  <motion.button 
-                    initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}
-                    onClick={() => handleNavigate('home')}
-                    className="w-full text-left p-3 hover:bg-[#f0f3ff] transition-colors rounded-xl font-bold text-sm text-primary"
-                  >
-                    About Us
-                  </motion.button>
-                  <motion.button 
-                    initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-                    onClick={() => handleNavigate('home')}
-                    className="w-full text-left p-3 hover:bg-[#f0f3ff] transition-colors rounded-xl font-bold text-sm text-primary"
-                  >
-                    Why Us
-                  </motion.button>
-                  <motion.button 
-                    initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
-                    onClick={() => handleNavigate('home')}
-                    className="w-full text-left p-3 hover:bg-[#f0f3ff] transition-colors rounded-xl font-bold text-sm text-primary"
-                  >
-                    Why Florens
-                  </motion.button>
+                  <div className="p-2 border-b border-neutral-100 mb-3 flex items-center justify-between">
+                    <span className="font-sans text-[11px] text-neutral-400 uppercase tracking-widest font-bold">Discover Florens</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#005eb5]"></span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <motion.button 
+                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}
+                      onClick={() => handleNavigate('about-us')}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    >
+                      <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
+                        <Info className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-sans font-bold text-primary transition-colors">About Us</span>
+                        <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Learn about our mission to simplify global expansion.</span>
+                      </div>
+                    </motion.button>
+
+                    <motion.button 
+                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+                      onClick={() => handleNavigate('why-florens')}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    >
+                      <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
+                        <HelpCircle className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-sans font-bold text-primary transition-colors">Why Florens</span>
+                        <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Uncompromising excellence and absolute certainty.</span>
+                      </div>
+                    </motion.button>
+
+                    <motion.button 
+                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
+                      onClick={() => handleNavigate('contact-us')}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 col-span-2"
+                    >
+                      <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
+                        <PhoneCall className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-sans font-bold text-primary transition-colors">Contact Us</span>
+                        <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Initiate a consultation with our global advisory desk.</span>
+                      </div>
+                    </motion.button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -282,7 +325,7 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-20 bg-white z-40 p-6 flex flex-col gap-6 lg:hidden shadow-inner overflow-y-auto"
+            className="fixed inset-0 top-20 bg-white z-40 p-6 flex flex-col gap-6 lg:hidden shadow-inner overflow-y-auto pb-32"
           >
             <div className="flex flex-col gap-1">
               <p className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest font-bold">Main Directory</p>
@@ -349,6 +392,44 @@ export default function App() {
                 </button>
               </div>
             </div>
+
+            <div className="flex flex-col gap-1.5 mt-2">
+              <p className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-1.5 font-bold">Company Directory</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
+                <button 
+                  onClick={() => handleNavigate('about-us')}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                >
+                  <Info className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-primary">About Us</strong>
+                    <span className="block text-neutral-500 text-[10px] mt-0.5">Our mission and vision.</span>
+                  </div>
+                </button>
+                
+                <button 
+                  onClick={() => handleNavigate('why-florens')}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                >
+                  <HelpCircle className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-primary">Why Florens</strong>
+                    <span className="block text-neutral-500 text-[10px] mt-0.5">Uncompromising excellence.</span>
+                  </div>
+                </button>
+
+                <button 
+                  onClick={() => handleNavigate('contact-us')}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer sm:col-span-2"
+                >
+                  <PhoneCall className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block text-primary">Contact Us</strong>
+                    <span className="block text-neutral-500 text-[10px] mt-0.5">Initiate a consultation.</span>
+                  </div>
+                </button>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -364,15 +445,27 @@ export default function App() {
         )}
 
         {currentView === 'subsidiary-formation' && (
-          <SubsidiaryFormationView />
+          <SubsidiaryFormationView onNavigate={handleNavigate} />
         )}
 
         {currentView === 'cost-calculator' && (
-          <CostCalculatorView />
+          <CostCalculatorView onNavigate={handleNavigate} />
         )}
 
         {currentView === 'service-detail' && (
-          <ServiceDetailView solutionId={activeSolutionId} />
+          <ServiceDetailView solutionId={activeSolutionId} onNavigate={handleNavigate} />
+        )}
+
+        {currentView === 'about-us' && (
+          <AboutUsView />
+        )}
+
+        {currentView === 'why-florens' && (
+          <WhyFlorensView />
+        )}
+
+        {currentView === 'contact-us' && (
+          <ContactUsView />
         )}
       </main>
 
@@ -383,8 +476,7 @@ export default function App() {
           {/* Brand Left Columns */}
           <div className="md:col-span-4 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <img src="/logo.jpg" alt="Florens Logo" className="h-8 w-auto rounded object-contain opacity-90" />
-              <span className="font-serif text-base font-bold text-white uppercase tracking-wide">Florens</span>
+              <img src="/Florens Primary Logo - footer.png" alt="Florens Logo" className="h-16 w-auto rounded object-contain opacity-90" />
             </div>
             <p className="font-sans text-xs text-neutral-400 leading-relaxed max-w-sm">
               An institutional-grade global expansion platform. We configure human capital architecture, secure intellectual property routing, and ensure statutory alignment across disparate jurisdictions.
@@ -434,7 +526,7 @@ export default function App() {
 
         {/* Legal copyright bar */}
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-baseline gap-4 font-mono text-[9px] text-neutral-500">
-          <span>© 2026 FLORENS CORPORATE SERVICES LLC. ALL LEDGER INDICES PRESERVED.</span>
+          <span>© 2026 FLORENS CONSULTING SERVICES PRIVATE LIMITED. ALL LEDGER INDICES PRESERVED.</span>
           <div className="flex gap-4">
             <span className="hover:text-white transition-colors cursor-pointer">TERMS OF COMPLIANCE</span>
             <span>•</span>

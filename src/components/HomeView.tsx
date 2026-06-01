@@ -264,8 +264,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             Institutional Custody & Trust Entrusted By Industry Leaders
           </p>
         </div>
-        <div className="w-[200%] flex marquee-content opacity-40 hover:opacity-75 transition-opacity duration-300">
-          <div className="flex w-1/2 justify-around items-center px-4 gap-12 font-serif text-base font-bold text-primary italic tracking-wider">
+        <div className="flex w-max marquee-content opacity-40 hover:opacity-75 transition-opacity duration-300">
+          <div className="flex justify-around items-center px-4 gap-12 font-serif text-base font-bold text-primary italic tracking-wider whitespace-nowrap">
             <span>Microsoft India Global</span>
             <span className="text-[#005eb5]/70">★</span>
             <span>Globex Enterprise Services</span>
@@ -277,8 +277,9 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             <span>Initech Corporate Holding</span>
             <span className="text-[#005eb5]/70">★</span>
             <span>Veer Capital Advisors</span>
+            <span className="text-[#005eb5]/70">★</span>
           </div>
-          <div className="flex w-1/2 justify-around items-center px-4 gap-12 font-serif text-base font-bold text-primary italic tracking-wider">
+          <div className="flex justify-around items-center px-4 gap-12 font-serif text-base font-bold text-primary italic tracking-wider whitespace-nowrap pr-12">
             <span>Microsoft India Global</span>
             <span className="text-[#005eb5]/70">★</span>
             <span>Globex Enterprise Services</span>
@@ -290,6 +291,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             <span>Initech Corporate Holding</span>
             <span className="text-[#005eb5]/70">★</span>
             <span>Veer Capital Advisors</span>
+            <span className="text-[#005eb5]/70">★</span>
           </div>
         </div>
       </section>
