@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ViewId, SolutionId } from './types';
+import { getPath, parsePath, isValidPath } from './navigation';
+import SeoHead from './seo/SeoHead';
 import HomeView from './components/HomeView';
 import GlobalSolutionsView from './components/GlobalSolutionsView';
 import SubsidiaryFormationView from './components/SubsidiaryFormationView';
@@ -8,6 +11,8 @@ import ServiceDetailView from './components/ServiceDetailView';
 import AboutUsView from './components/AboutUsView';
 import WhyFlorensView from './components/WhyFlorensView';
 import ContactUsView from './components/ContactUsView';
+import ChatWidget from './components/ChatWidget';
+import { CONTACT, CONTACT_ADDRESS_FULL } from './contact';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Globe, 
@@ -18,8 +23,6 @@ import {
   Users, 
   FileText, 
   Calculator, 
-  ShieldCheck, 
-  Terminal, 
   Layers,
   Award,
   BookOpen,
@@ -29,8 +32,9 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<ViewId>('home');
-  const [activeSolutionId, setActiveSolutionId] = useState<SolutionId>('eor');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { view: currentView, solutionId: activeSolutionId } = parsePath(location.pathname);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -49,12 +53,14 @@ export default function App() {
     };
   }, []);
 
-  // Quick navigation helper
-  const handleNavigate = (view: ViewId, solutionId?: SolutionId) => {
-    setCurrentView(view);
-    if (solutionId) {
-      setActiveSolutionId(solutionId);
+  useEffect(() => {
+    if (!isValidPath(location.pathname)) {
+      navigate('/', { replace: true });
     }
+  }, [location.pathname, navigate]);
+
+  const handleNavigate = (view: ViewId, solutionId?: SolutionId) => {
+    navigate(getPath(view, solutionId ?? activeSolutionId));
     setDropdownOpen(false);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -80,9 +86,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f9f9ff] text-[#151c27] font-sans flex flex-col justify-between selection:bg-[#005eb5]/10 selection:text-[#005eb5]">
-      
-      {/* Top Corporate Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-white/85 backdrop-blur-md border-b border-neutral-200/50 z-50 flex items-center justify-between px-6 md:px-16 transition-all duration-300 shadow-sm">
+      <SeoHead view={currentView} solutionId={activeSolutionId} />
+
+      <header className="fixed top-0 left-0 right-0 h-20 bg-white/85 backdrop-blur-md border-b border-neutral-200/50 z-50 flex items-center justify-between px-6 md:px-16 transition-all duration-300 shadow-sm" role="banner">
         
         {/* Brand Logo & Wordmark */}
         <div 
@@ -90,15 +96,11 @@ export default function App() {
           className="flex items-center gap-3 cursor-pointer group"
           id="brand-logo-container"
         >
-          <img src="/Florens Primary Logo - navbar.png" alt="Florens Logo" className="h-16 w-auto rounded-md object-contain transition-transform duration-300 group-hover:scale-105" />
-          <div className="flex flex-col ml-1 hidden sm:flex">
-            <span className="font-sans text-lg font-bold text-primary tracking-tight">Florens</span>
-            <span className="font-sans text-[10px] text-[#005eb5] font-semibold uppercase tracking-wider">Consulting Services Private Limited</span>
-          </div>
+          <img src="/florens-logo-navbar.png" alt="Florens Consulting Services" className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105" width="220" height="56" />
         </div>
 
         {/* Desktop Nav Actions */}
-        <nav className="hidden lg:flex items-center gap-8 text-sm font-sans font-semibold text-neutral-600">
+        <nav className="hidden lg:flex items-center gap-8 text-sm font-sans font-semibold text-neutral-600" aria-label="Main navigation">
           
           <button 
             onClick={() => handleNavigate('home')}
@@ -434,8 +436,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Main Content Render router */}
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-20" role="main" id="main-content">
         {currentView === 'home' && (
           <HomeView onNavigate={handleNavigate} />
         )}
@@ -476,7 +477,7 @@ export default function App() {
           {/* Brand Left Columns */}
           <div className="md:col-span-4 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <img src="/Florens Primary Logo - footer.png" alt="Florens Logo" className="h-16 w-auto rounded object-contain opacity-90" />
+              <img src="/florens-logo-footer.png" alt="Florens Consulting Services Pvt. Ltd." className="h-14 w-auto object-contain opacity-95" width="220" height="56" loading="lazy" />
             </div>
             <p className="font-sans text-xs text-neutral-400 leading-relaxed max-w-sm">
               An institutional-grade global expansion platform. We configure human capital architecture, secure intellectual property routing, and ensure statutory alignment across disparate jurisdictions.
@@ -488,38 +489,43 @@ export default function App() {
             <div>
               <h4 className="font-sans text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-4">Core Directory</h4>
               <ul className="space-y-3 font-semibold text-neutral-300">
-                <li><button onClick={() => handleNavigate('home')} className="hover:text-white transition-colors cursor-pointer text-left">Corporate Home</button></li>
-                <li><button onClick={() => handleNavigate('global-solutions')} className="hover:text-white transition-colors cursor-pointer text-left">Global Solutions</button></li>
-                <li><button onClick={() => handleNavigate('subsidiary-formation')} className="hover:text-white transition-colors cursor-pointer text-left">Subsidiary Formation (India)</button></li>
-                <li><button onClick={() => handleNavigate('cost-calculator')} className="hover:text-white transition-colors cursor-pointer text-left">EOR Cost Modeling</button></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Corporate Home</Link></li>
+                <li><Link to="/global-solutions" className="hover:text-white transition-colors">Global Solutions</Link></li>
+                <li><Link to="/subsidiary-formation" className="hover:text-white transition-colors">Subsidiary Formation (India)</Link></li>
+                <li><Link to="/cost-calculator" className="hover:text-white transition-colors">EOR Cost Modeling</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-sans text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-4">Division Services</h4>
               <ul className="space-y-3 font-semibold text-neutral-300">
-                <li><button onClick={() => handleNavigate('service-detail', 'eor')} className="hover:text-[#5c9efe] transition-colors cursor-pointer text-left">Employer of Record</button></li>
-                <li><button onClick={() => handleNavigate('service-detail', 'peo')} className="hover:text-[#5c9efe] transition-colors cursor-pointer text-left">International PEO &amp; HR</button></li>
-                <li><button onClick={() => handleNavigate('service-detail', 'contractor')} className="hover:text-[#5c9efe] transition-colors cursor-pointer text-left">Independent Contractors</button></li>
-                <li><p className="text-neutral-500 select-none">Institutional Trust Desk</p></li>
+                <li><Link to="/services/eor" className="hover:text-[#5c9efe] transition-colors">Employer of Record</Link></li>
+                <li><Link to="/services/peo" className="hover:text-[#5c9efe] transition-colors">International PEO &amp; HR</Link></li>
+                <li><Link to="/services/contractor" className="hover:text-[#5c9efe] transition-colors">Independent Contractors</Link></li>
+                <li><Link to="/about-us" className="hover:text-[#5c9efe] transition-colors">About Us</Link></li>
+                <li><Link to="/why-florens" className="hover:text-[#5c9efe] transition-colors">Why Florens</Link></li>
+                <li><Link to="/contact-us" className="hover:text-[#5c9efe] transition-colors">Contact Us</Link></li>
               </ul>
             </div>
           </div>
 
-          {/* Secure details Right columns */}
-          <div className="md:col-span-3 flex flex-col gap-3 font-mono text-[9px] text-neutral-400">
-            <h4 className="uppercase tracking-widest font-bold text-neutral-500 mb-1">Audit Ledger status</h4>
-            <div className="flex justify-between py-1.5 border-b border-white/5">
-              <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5 text-[#5c9efe]" /> LEDGER STAMP:</span>
-              <strong className="text-white">FLR-2026.5</strong>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-white/5">
-              <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> SYSTEM ENCRYPTION:</span>
-              <strong className="text-emerald-500 uppercase">SECURE STATUS</strong>
-            </div>
-            <div className="flex justify-between py-1.5 font-bold">
-              <span>SLA GUARANTEE:</span>
-              <span className="text-[#5c9efe]">99.9% ACCURACY</span>
-            </div>
+          {/* Contact Right column */}
+          <div className="md:col-span-3 flex flex-col gap-3 font-sans text-xs text-neutral-400">
+            <h4 className="font-sans text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-2">Contact</h4>
+            <p className="text-neutral-400 leading-relaxed">{CONTACT_ADDRESS_FULL}</p>
+            <a href={`mailto:${CONTACT.email}`} className="text-[#5c9efe] hover:text-white transition-colors font-semibold">
+              {CONTACT.email}
+            </a>
+            <a href={`tel:${CONTACT.phoneTel}`} className="text-neutral-300 hover:text-white transition-colors font-semibold">
+              Phone: {CONTACT.phoneDisplay}
+            </a>
+            <a
+              href={CONTACT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#25D366] hover:text-[#4ade80] transition-colors font-semibold"
+            >
+              WhatsApp: +91 {CONTACT.whatsappDisplay}
+            </a>
           </div>
 
         </div>
@@ -536,6 +542,7 @@ export default function App() {
 
       </footer>
 
+      <ChatWidget />
     </div>
   );
 }

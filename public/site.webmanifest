@@ -1,0 +1,17 @@
+{
+  "name": "Florens Consulting Services Pvt. Ltd.",
+  "short_name": "Florens",
+  "description": "Business consulting, global expansion, EOR, and workforce solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9f9ff",
+  "theme_color": "#005eb5",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/florens-logo-navbar.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
