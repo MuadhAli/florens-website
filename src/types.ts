@@ -1,4 +1,4 @@
-export type ViewId = 'home' | 'global-solutions' | 'subsidiary-formation' | 'cost-calculator' | 'service-detail' | 'contact-us' | 'about-us' | 'why-florens';
+export type ViewId = 'home' | 'global-solutions' | 'subsidiary-formation' | 'cost-calculator' | 'service-detail' | 'contact-us' | 'about-us' | 'why-florens' | 'not-found';
 
 export type SolutionId = 'eor' | 'peo' | 'contractor' | 'subsidiary';
 

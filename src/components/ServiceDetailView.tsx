@@ -1,5 +1,7 @@
 import React from 'react';
-import { ViewId, SolutionId } from '../types';
+import { Link } from 'react-router-dom';
+import { getPath } from '../navigation';
+import { SolutionId } from '../types';
 import { SOLUTIONS_DATA } from '../data';
 import { motion } from 'motion/react';
 import { 
@@ -16,10 +18,9 @@ import LeadInquiryForm from './LeadInquiryForm';
 
 interface ServiceDetailViewProps {
   solutionId: SolutionId;
-  onNavigate?: (view: ViewId) => void;
 }
 
-export default function ServiceDetailView({ solutionId, onNavigate = () => {} }: ServiceDetailViewProps) {
+export default function ServiceDetailView({ solutionId }: ServiceDetailViewProps) {
   const detail = SOLUTIONS_DATA[solutionId];
 
   if (!detail) {
@@ -42,7 +43,7 @@ export default function ServiceDetailView({ solutionId, onNavigate = () => {} }:
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
           >
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+            <Link to={getPath('home')} className="hover:text-white cursor-pointer transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-[#005eb5] font-bold">Services</span>
             <ChevronRight className="w-3 h-3" />

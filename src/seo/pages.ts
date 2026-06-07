@@ -71,6 +71,12 @@ const PAGES: Record<Exclude<ViewId, 'service-detail'>, PageSeo> = {
     keywords:
       'contact Florens, Florens Bengaluru office, business consulting contact India, florensservices email',
   },
+  'not-found': {
+    path: '/404',
+    title: `Page Not Found | ${SITE_NAME_SHORT}`,
+    description: 'The page you are looking for does not exist.',
+    keywords: '404, page not found',
+  },
 };
 
 const SERVICE_SEO: Record<SolutionId, PageSeo> = {

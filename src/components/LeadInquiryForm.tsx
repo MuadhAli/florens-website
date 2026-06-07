@@ -36,13 +36,36 @@ export default function LeadInquiryForm({ solutionId, solutionTitle, onClose }: 
   const [loading, setLoading] = useState(false);
   const [ledgerIndex] = useState(() => `FLR-${Math.floor(Math.random() * 90000) + 10000}`);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    setSubmitError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formState,
+          solutionTitle,
+          ledgerIndex,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(json.error || 'Something went wrong. Please try again or email us directly.');
+      }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.');
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1200);
+    }
   };
 
   if (submitted) {
@@ -229,6 +252,14 @@ export default function LeadInquiryForm({ solutionId, solutionTitle, onClose }: 
             </>
           )}
         </button>
+
+        {submitError && (
+          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-sans flex items-start gap-2">
+            <span className="font-bold text-red-500 shrink-0">⚠</span>
+            <span>{submitError}</span>
+          </div>
+        )}
+
       </form>
     </div>
   );

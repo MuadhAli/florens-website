@@ -66,6 +66,10 @@ const BREADCRUMBS: Record<ViewId, { name: string; path: string }[]> = {
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/global-solutions' },
   ],
+  'not-found': [
+    { name: 'Home', path: '/' },
+    { name: 'Not Found', path: '/404' },
+  ],
 };
 
 interface SeoHeadProps {

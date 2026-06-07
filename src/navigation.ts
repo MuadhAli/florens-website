@@ -42,7 +42,7 @@ export function parsePath(pathname: string): { view: ViewId; solutionId: Solutio
     return { view: 'service-detail', solutionId: serviceMatch[1] as SolutionId };
   }
 
-  return { view: 'home', solutionId: 'eor' };
+  return { view: 'not-found', solutionId: 'eor' };
 }
 
 export function isValidPath(pathname: string): boolean {

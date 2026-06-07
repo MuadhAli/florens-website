@@ -19,13 +19,11 @@ import {
 } from 'lucide-react';
 import LeadInquiryForm from './LeadInquiryForm';
 
-import { ViewId } from '../types';
+import { Link } from 'react-router-dom';
+import { getPath } from '../navigation';
+import { ViewId, CalculatorState } from '../types';
 
-interface CostCalculatorViewProps {
-  onNavigate?: (view: ViewId) => void;
-}
-
-export default function CostCalculatorView({ onNavigate = () => {} }: CostCalculatorViewProps) {
+export default function CostCalculatorView() {
   const [selectedCountry, setSelectedCountry] = useState<string>('uk');
   const [headcount, setHeadcount] = useState<number>(3);
   const [salary, setSalary] = useState<number>(115000);
@@ -73,7 +71,7 @@ export default function CostCalculatorView({ onNavigate = () => {} }: CostCalcul
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
           >
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+            <Link to={getPath('home')} className="hover:text-white cursor-pointer transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-[#005eb5] font-bold">Cost Modeling</span>
           </motion.div>

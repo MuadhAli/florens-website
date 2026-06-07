@@ -18,13 +18,11 @@ import {
 } from 'lucide-react';
 import LeadInquiryForm from './LeadInquiryForm';
 
+import { Link } from 'react-router-dom';
+import { getPath } from '../navigation';
 import { ViewId } from '../types';
 
-interface SubsidiaryFormationViewProps {
-  onNavigate?: (view: ViewId) => void;
-}
-
-export default function SubsidiaryFormationView({ onNavigate = () => {} }: SubsidiaryFormationViewProps) {
+export default function SubsidiaryFormationView() {
   const [activePhase, setActivePhase] = useState<number>(1);
   const [showForm, setShowForm] = useState(false);
   const [showFactSheet, setShowFactSheet] = useState(false);
@@ -95,7 +93,7 @@ export default function SubsidiaryFormationView({ onNavigate = () => {} }: Subsi
               animate={{ opacity: 1, y: 0 }}
               className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
             >
-              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+              <Link to={getPath('home')} className="hover:text-white cursor-pointer transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3" />
               <span className="text-[#005eb5] font-bold">Subsidiary Formation</span>
             </motion.div>

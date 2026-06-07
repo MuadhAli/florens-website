@@ -11,6 +11,7 @@ import ServiceDetailView from './components/ServiceDetailView';
 import AboutUsView from './components/AboutUsView';
 import WhyFlorensView from './components/WhyFlorensView';
 import ContactUsView from './components/ContactUsView';
+import NotFoundView from './components/NotFoundView';
 import ChatWidget from './components/ChatWidget';
 import { CONTACT, CONTACT_ADDRESS_FULL } from './contact';
 import { motion, AnimatePresence } from 'motion/react';
@@ -53,18 +54,18 @@ export default function App() {
     };
   }, []);
 
+  // Scroll to top on route change
   useEffect(() => {
-    if (!isValidPath(location.pathname)) {
-      navigate('/', { replace: true });
-    }
-  }, [location.pathname, navigate]);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
-  const handleNavigate = (view: ViewId, solutionId?: SolutionId) => {
-    navigate(getPath(view, solutionId ?? activeSolutionId));
+  // Handle generic close actions on navigation
+  const handleNavClick = () => {
     setDropdownOpen(false);
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+
 
   const activeViewLabel = () => {
     switch (currentView) {
@@ -91,30 +92,33 @@ export default function App() {
       <header className="fixed top-0 left-0 right-0 h-20 bg-white/85 backdrop-blur-md border-b border-neutral-200/50 z-50 flex items-center justify-between px-6 md:px-16 transition-all duration-300 shadow-sm" role="banner">
         
         {/* Brand Logo & Wordmark */}
-        <div 
-          onClick={() => handleNavigate('home')} 
+        <Link 
+          to={getPath('home')} 
+          onClick={handleNavClick}
           className="flex items-center gap-3 cursor-pointer group"
           id="brand-logo-container"
         >
           <img src="/florens-logo-navbar.png" alt="Florens Consulting Services" className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105" width="220" height="56" />
-        </div>
+        </Link>
 
         {/* Desktop Nav Actions */}
         <nav className="hidden lg:flex items-center gap-8 text-sm font-sans font-semibold text-neutral-600" aria-label="Main navigation">
           
-          <button 
-            onClick={() => handleNavigate('home')}
+          <Link 
+            to={getPath('home')}
+            onClick={handleNavClick}
             className={`hover:text-primary transition-colors h-20 flex items-center border-b-2 cursor-pointer ${currentView === 'home' ? 'border-[#005eb5] text-primary' : 'border-transparent'}`}
           >
             Home
-          </button>
+          </Link>
 
-          <button 
-            onClick={() => handleNavigate('global-solutions')}
+          <Link 
+            to={getPath('global-solutions')}
+            onClick={handleNavClick}
             className={`hover:text-primary transition-colors h-20 flex items-center border-b-2 cursor-pointer ${currentView === 'global-solutions' ? 'border-[#005eb5] text-primary' : 'border-transparent'}`}
           >
             Global Architectures
-          </button>
+          </Link>
 
           {/* Solution Dropdown Wrapper */}
           <div 
@@ -152,10 +156,10 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}
-                      onClick={() => handleNavigate('service-detail', 'eor')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('service-detail', 'eor')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <Globe className="w-5 h-5" />
@@ -164,12 +168,12 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Employer of Record (EOR)</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Hire internationally without establishing a local entity.</span>
                       </div>
-                    </motion.button>
+                    </Link>
 
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-                      onClick={() => handleNavigate('service-detail', 'peo')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('service-detail', 'peo')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <Users className="w-5 h-5" />
@@ -178,12 +182,12 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Professional Employer Org</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Co-employment HR, benefits, and localized payroll.</span>
                       </div>
-                    </motion.button>
+                    </Link>
 
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
-                      onClick={() => handleNavigate('service-detail', 'contractor')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('service-detail', 'contractor')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <FileText className="w-5 h-5" />
@@ -192,12 +196,12 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Contractor Management</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Onboard freelancers globally with zero misclassification risk.</span>
                       </div>
-                    </motion.button>
+                    </Link>
 
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-                      onClick={() => handleNavigate('subsidiary-formation')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('subsidiary-formation')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <Building className="w-5 h-5" />
@@ -206,7 +210,7 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Subsidiary Formation</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Establish a permanent, compliant physical entity.</span>
                       </div>
-                    </motion.button>
+                    </Link>
                   </div>
                 </motion.div>
               )}
@@ -241,10 +245,10 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}
-                      onClick={() => handleNavigate('about-us')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('about-us')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <Info className="w-5 h-5" />
@@ -253,12 +257,12 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">About Us</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Learn about our mission to simplify global expansion.</span>
                       </div>
-                    </motion.button>
+                    </Link>
 
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-                      onClick={() => handleNavigate('why-florens')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10"
+                    <Link 
+                      to={getPath('why-florens')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <HelpCircle className="w-5 h-5" />
@@ -267,12 +271,12 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Why Florens</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Uncompromising excellence and absolute certainty.</span>
                       </div>
-                    </motion.button>
+                    </Link>
 
-                    <motion.button 
-                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}
-                      onClick={() => handleNavigate('contact-us')}
-                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 col-span-2"
+                    <Link 
+                      to={getPath('contact-us')}
+                      onClick={handleNavClick}
+                      className="text-left p-4 hover:bg-[#f0f3ff] transition-colors rounded-2xl group flex flex-col items-start gap-3 cursor-pointer border border-transparent hover:border-[#005eb5]/10 col-span-2 block"
                     >
                       <div className="p-2.5 bg-neutral-50 rounded-xl text-secondary group-hover:bg-[#005eb5] group-hover:text-white transition-colors shadow-sm">
                         <PhoneCall className="w-5 h-5" />
@@ -281,19 +285,20 @@ export default function App() {
                         <span className="block text-sm font-sans font-bold text-primary transition-colors">Contact Us</span>
                         <span className="block text-[11px] text-neutral-500 font-sans mt-1.5 leading-relaxed">Initiate a consultation with our global advisory desk.</span>
                       </div>
-                    </motion.button>
+                    </Link>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          <button 
-            onClick={() => handleNavigate('cost-calculator')}
+          <Link 
+            to={getPath('cost-calculator')}
+            onClick={handleNavClick}
             className={`hover:text-primary transition h-20 flex items-center border-b-2 cursor-pointer ${currentView === 'cost-calculator' ? 'border-[#005eb5] text-primary' : 'border-transparent'}`}
           >
             Cost Modeling
-          </button>
+          </Link>
         </nav>
 
         {/* Right Nav Action Trigger */}
@@ -302,12 +307,12 @@ export default function App() {
             <span>SYSTEM MONITOR</span>
             <span className="text-[#005eb5] font-bold uppercase tracking-wider">{activeViewLabel()}</span>
           </div>
-          <button 
-            onClick={() => handleNavigate('cost-calculator')}
-            className="bg-primary text-white text-[11px] font-mono font-bold uppercase tracking-widest h-11 px-6 hover:bg-[#20293a] transition-colors cursor-pointer rounded-lg shadow-sm"
+          <Link 
+            to={getPath('cost-calculator')}
+            className="bg-primary text-white text-[11px] font-mono font-bold uppercase tracking-widest h-11 flex items-center px-6 hover:bg-[#20293a] transition-colors cursor-pointer rounded-lg shadow-sm"
           >
             Initiate Calculator
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Mini Menu Trigger */}
@@ -335,101 +340,108 @@ export default function App() {
             </div>
             
             <div className="flex flex-col gap-4 font-serif text-2xl font-bold text-primary text-sans">
-              <button onClick={() => handleNavigate('home')} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer">
+              <Link to={getPath('home')} onClick={handleNavClick} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer block">
                 Home
-              </button>
-              <button onClick={() => handleNavigate('global-solutions')} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer">
+              </Link>
+              <Link to={getPath('global-solutions')} onClick={handleNavClick} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer block">
                 Global Architectures
-              </button>
-              <button onClick={() => handleNavigate('cost-calculator')} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer">
+              </Link>
+              <Link to={getPath('cost-calculator')} onClick={handleNavClick} className="text-left w-full hover:text-secondary transition py-2 cursor-pointer block">
                 Cost Modeling
-              </button>
+              </Link>
             </div>
 
             <div className="flex flex-col gap-1.5 mt-4">
               <p className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-1.5 font-bold">General Solutions Dropdown</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
-                <button 
-                  onClick={() => handleNavigate('service-detail', 'eor')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                <Link 
+                  to={getPath('service-detail', 'eor')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer block"
                 >
                   <FileText className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">Employer of Record (EOR)</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Hire internationally without establishing an entity.</span>
                   </div>
-                </button>
+                </Link>
                 
-                <button 
-                  onClick={() => handleNavigate('service-detail', 'peo')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                <Link 
+                  to={getPath('service-detail', 'peo')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer block"
                 >
                   <Users className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">Professional Employer Org (PEO)</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Co-employment HR & localized payroll.</span>
                   </div>
-                </button>
+                </Link>
 
-                <button 
-                  onClick={() => handleNavigate('service-detail', 'contractor')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                <Link 
+                  to={getPath('service-detail', 'contractor')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer block"
                 >
                   <Layers className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">Contractor Management</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Onboard freelancers safely globally.</span>
                   </div>
-                </button>
+                </Link>
 
-                <button 
-                  onClick={() => handleNavigate('subsidiary-formation')}
-                  className="p-4 bg-neutral-50 hover:bg-[#f0f3ff] rounded-lg text-left flex gap-3 transition border border-[#005eb5]/10 cursor-pointer md:col-span-2"
+                <Link 
+                  to={getPath('subsidiary-formation')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-[#f0f3ff] rounded-lg text-left flex gap-3 transition border border-[#005eb5]/10 cursor-pointer md:col-span-2 block"
                 >
                   <Building className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-[#005eb5] font-bold">Subsidiary Formation (India)</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Physical local entity establishment.</span>
                   </div>
-                </button>
+                </Link>
               </div>
             </div>
 
             <div className="flex flex-col gap-1.5 mt-2">
               <p className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-1.5 font-bold">Company Directory</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
-                <button 
-                  onClick={() => handleNavigate('about-us')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                <Link 
+                  to={getPath('about-us')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer block"
                 >
                   <Info className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">About Us</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Our mission and vision.</span>
                   </div>
-                </button>
+                </Link>
                 
-                <button 
-                  onClick={() => handleNavigate('why-florens')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer"
+                <Link 
+                  to={getPath('why-florens')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer block"
                 >
                   <HelpCircle className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">Why Florens</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Uncompromising excellence.</span>
                   </div>
-                </button>
+                </Link>
 
-                <button 
-                  onClick={() => handleNavigate('contact-us')}
-                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer sm:col-span-2"
+                <Link 
+                  to={getPath('contact-us')}
+                  onClick={handleNavClick}
+                  className="p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg text-left flex gap-3 transition cursor-pointer sm:col-span-2 block"
                 >
                   <PhoneCall className="text-[#005eb5] w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-primary">Contact Us</strong>
                     <span className="block text-neutral-500 text-[10px] mt-0.5">Initiate a consultation.</span>
                   </div>
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -438,23 +450,23 @@ export default function App() {
 
       <main className="flex-grow pt-20" role="main" id="main-content">
         {currentView === 'home' && (
-          <HomeView onNavigate={handleNavigate} />
+          <HomeView />
         )}
 
         {currentView === 'global-solutions' && (
-          <GlobalSolutionsView onNavigate={handleNavigate} />
+          <GlobalSolutionsView />
         )}
 
         {currentView === 'subsidiary-formation' && (
-          <SubsidiaryFormationView onNavigate={handleNavigate} />
+          <SubsidiaryFormationView />
         )}
 
         {currentView === 'cost-calculator' && (
-          <CostCalculatorView onNavigate={handleNavigate} />
+          <CostCalculatorView />
         )}
 
         {currentView === 'service-detail' && (
-          <ServiceDetailView solutionId={activeSolutionId} onNavigate={handleNavigate} />
+          <ServiceDetailView solutionId={activeSolutionId} />
         )}
 
         {currentView === 'about-us' && (
@@ -467,6 +479,10 @@ export default function App() {
 
         {currentView === 'contact-us' && (
           <ContactUsView />
+        )}
+
+        {currentView === 'not-found' && (
+          <NotFoundView />
         )}
       </main>
 

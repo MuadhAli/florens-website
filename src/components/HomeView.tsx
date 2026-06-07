@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getPath } from '../navigation';
 import { ViewId, SolutionId } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -17,11 +19,7 @@ import {
   Percent
 } from 'lucide-react';
 
-interface HomeViewProps {
-  onNavigate: (view: ViewId, solutionId?: SolutionId) => void;
-}
-
-export default function HomeView({ onNavigate }: HomeViewProps) {
+export default function HomeView() {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -105,18 +103,18 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     className="flex flex-wrap gap-4"
                   >
-                    <button
-                      onClick={() => onNavigate('global-solutions')}
+                    <Link
+                      to={getPath('global-solutions')}
                       className="bg-[#005eb5] text-white h-12 px-8 flex items-center justify-center text-xs font-mono font-bold uppercase tracking-widest hover:bg-opacity-90 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#005eb5]/20 hover:scale-[1.02] active:scale-95 text-center"
                     >
                       Expand Globally
-                    </button>
-                    <button
-                      onClick={() => onNavigate('cost-calculator')}
+                    </Link>
+                    <Link
+                      to={getPath('cost-calculator')}
                       className="border border-white/30 text-white h-12 px-8 flex items-center justify-center text-xs font-mono font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300 cursor-pointer hover:border-white/60 text-center"
                     >
                       EOR Calculator
-                    </button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>
@@ -159,7 +157,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                     </p>
                   </motion.div>
                   
-                  <motion.h1 
+                  <motion.h2 
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.6 }}
@@ -167,7 +165,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                   >
                     Precision Payroll.<br />
                     <span className="text-[#5c9efe]">Flawless Execution.</span>
-                  </motion.h1>
+                  </motion.h2>
                   
                   <motion.p 
                     initial={{ opacity: 0, y: 15 }}
@@ -184,12 +182,12 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     className="flex gap-4"
                   >
-                    <button
-                      onClick={() => onNavigate('service-detail', 'peo')}
+                    <Link
+                      to={getPath('service-detail', 'peo')}
                       className="bg-[#005eb5] text-white h-12 px-8 flex items-center justify-center text-xs font-mono font-bold uppercase tracking-widest hover:bg-opacity-90 transition-all duration-300 cursor-pointer shadow-lg hover:scale-[1.02] active:scale-95 text-center"
                     >
                       Streamline Operations
-                    </button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>
@@ -333,13 +331,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </p>
             </div>
             <div className="mt-8 pt-4 border-t border-neutral-100/70">
-              <button 
-                onClick={() => onNavigate('global-solutions')}
-                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-4 transition-all duration-300 cursor-pointer"
+              <Link 
+                to={getPath('global-solutions')}
+                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-4 transition-all duration-300 cursor-pointer w-max"
               >
                 View Global Solutions 
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
 
@@ -367,13 +365,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </p>
             </div>
             <div className="mt-8 pt-4 border-t border-neutral-100">
-              <button 
-                onClick={() => onNavigate('subsidiary-formation')}
-                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition-all duration-300 cursor-pointer"
+              <Link 
+                to={getPath('subsidiary-formation')}
+                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition-all duration-300 cursor-pointer w-max"
               >
                 Explore Footprint Setup 
                 <ChevronRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
 
@@ -427,13 +425,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             </div>
             
             <div className="mt-6 pt-4 border-t border-neutral-100">
-              <button 
-                onClick={() => onNavigate('service-detail', 'contractor')}
-                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition duration-300 cursor-pointer"
+              <Link 
+                to={getPath('service-detail', 'contractor')}
+                className="font-mono text-xs text-secondary font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition duration-300 cursor-pointer w-max"
               >
                 Independent Contractors 
                 <ChevronRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </motion.div>
 
@@ -492,13 +490,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </div>
             </div>
 
-            <button 
-              onClick={() => onNavigate('global-solutions')}
-              className="group bg-[#005eb5] text-white h-14 px-10 flex items-center justify-center text-sm font-mono font-bold uppercase tracking-widest hover:bg-[#004b93] transition-all duration-300 cursor-pointer shadow-xl shadow-[#005eb5]/20 rounded-sm"
+            <Link 
+              to={getPath('global-solutions')}
+              className="group bg-[#005eb5] text-white h-14 px-10 flex items-center justify-center text-sm font-mono font-bold uppercase tracking-widest hover:bg-[#004b93] transition-all duration-300 cursor-pointer shadow-xl shadow-[#005eb5]/20 rounded-sm w-max"
             >
               Discover the Framework
               <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -617,12 +615,12 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             </div>
 
             <div className="mt-8 flex justify-center">
-              <button 
-                onClick={() => onNavigate('cost-calculator')}
-                className="bg-[#005eb5] text-white font-mono text-xs font-bold uppercase px-6 py-3 tracking-widest hover:bg-opacity-90 transition w-full cursor-pointer text-center"
+              <Link 
+                to={getPath('cost-calculator')}
+                className="bg-[#005eb5] text-white font-mono text-xs font-bold uppercase px-6 py-3 tracking-widest hover:bg-opacity-90 transition w-full cursor-pointer text-center flex justify-center"
               >
                 Launch Decision Matrix
-              </button>
+              </Link>
             </div>
           </div>
         </div>

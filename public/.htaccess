@@ -1,4 +1,11 @@
-# SPA fallback for static deploy (Apache on Hostinger shared hosting)
+# Chat API (PHP on Hostinger static/Apache)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^api/chat$ api/chat.php [L,QSA]
+</IfModule>
+
+# SPA fallback
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /

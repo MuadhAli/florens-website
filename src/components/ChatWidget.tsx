@@ -40,35 +40,45 @@ export default function ChatWidget() {
     setInput('');
     setLoading(true);
 
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: nextMessages }),
-      });
+    const endpoints = ['/api/chat', '/api/chat.php'];
 
-      const data = await res.json();
+    let lastError = 'Unable to reach the assistant. Please try again.';
 
-      if (!res.ok) {
-        setMessages([
-          ...nextMessages,
-          {
-            role: 'assistant',
-            content: data.error || 'Something went wrong. Please try again later.',
-          },
-        ]);
+    for (const endpoint of endpoints) {
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: nextMessages }),
+        });
+
+        const text = await res.text();
+        let data: { reply?: string; error?: string };
+        try {
+          data = JSON.parse(text);
+        } catch {
+          lastError = 'Chat service not found. Re-upload the latest site files or enable Node.js hosting.';
+          continue;
+        }
+
+        if (!res.ok) {
+          lastError = data.error || 'Something went wrong. Please try again later.';
+          continue;
+        }
+
+        setMessages([...nextMessages, { role: 'assistant', content: data.reply ?? lastError }]);
+        setLoading(false);
         return;
+      } catch {
+        continue;
       }
-
-      setMessages([...nextMessages, { role: 'assistant', content: data.reply }]);
-    } catch {
-      setMessages([
-        ...nextMessages,
-        { role: 'assistant', content: 'Unable to reach the assistant. Please try again.' },
-      ]);
-    } finally {
-      setLoading(false);
     }
+
+    setMessages([
+      ...nextMessages,
+      { role: 'assistant', content: lastError },
+    ]);
+    setLoading(false);
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {

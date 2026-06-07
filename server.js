@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { getChatReply } from './server/chatHandler.ts';
+import { getChatReply } from './server/chatHandler.mjs';
 
 dotenv.config();
 
@@ -11,6 +11,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json({ limit: '32kb' }));
+
+app.get('/api/health', (_req, res) => {
+  res.json({
+    ok: true,
+    chat: Boolean(process.env.GROK_API_KEY),
+  });
+});
 
 app.post('/api/chat', async (req, res) => {
   const apiKey = process.env.GROK_API_KEY || '';
@@ -31,6 +38,6 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });

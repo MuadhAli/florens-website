@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getPath } from '../navigation';
 import { ViewId, SolutionId } from '../types';
 import { THE_ARCHIVE } from '../data';
 import { motion, AnimatePresence } from 'motion/react';
@@ -20,11 +22,7 @@ import {
 } from 'lucide-react';
 import LeadInquiryForm from './LeadInquiryForm';
 
-interface GlobalSolutionsViewProps {
-  onNavigate: (view: ViewId, solutionId?: SolutionId) => void;
-}
-
-export default function GlobalSolutionsView({ onNavigate }: GlobalSolutionsViewProps) {
+export default function GlobalSolutionsView() {
   const [selectedRegion, setSelectedRegion] = useState<'all' | 'emea' | 'apac' | 'americas'>('all');
   const [showInquiryModal, setShowInquiryModal] = useState(false);
   const [activeNode, setActiveNode] = useState<string | null>(null);
@@ -76,7 +74,7 @@ export default function GlobalSolutionsView({ onNavigate }: GlobalSolutionsViewP
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-6"
           >
-            <span className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>Home</span>
+            <Link to={getPath('home')} className="hover:text-white cursor-pointer transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-[#005eb5] font-bold">Global Architectures</span>
           </motion.div>
@@ -282,12 +280,12 @@ export default function GlobalSolutionsView({ onNavigate }: GlobalSolutionsViewP
             <p className="text-neutral-500 text-xs leading-relaxed mb-6 font-sans">
               Indexed academic case studies, legal whitepapers, and geographic briefs detailing structural compliance implementations across volatile high-growth regional corridors.
             </p>
-            <button 
-              onClick={() => onNavigate('subsidiary-formation')}
-              className="inline-flex items-center gap-1.5 font-mono text-[10px] text-secondary uppercase font-bold tracking-widest hover:underline cursor-pointer"
+            <Link 
+              to={getPath('subsidiary-formation')}
+              className="inline-flex items-center gap-2 bg-[#005eb5] text-white px-8 py-4 font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#004b93] transition-colors cursor-pointer"
             >
               Read India Focus PDF <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </Link>
           </div>
 
           <div className="lg:col-span-8 flex flex-col divide-y divide-neutral-100">
